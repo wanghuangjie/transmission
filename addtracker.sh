@@ -8,9 +8,9 @@ LIVE_TRACKERS_LIST_CMD='curl -fs --url https://raw.githubusercontent.com/ngosang
 username = 'admin'
 password = 'password'
 
-TRANSMISSION_REMOTE='/usr/bin/transmission-remote -n $username:$password'
+TRANSMISSION_REMOTE='/usr/bin/transmission-remote'
 
-TORRENTS=$($TRANSMISSION_REMOTE -l 2>/dev/null)
+TORRENTS=$($TRANSMISSION_REMOTE -l -n $username:$password 2>/dev/null)
 if [ $? -ne 0 ]; then
   echo -e "\n\e[0;91;1mFail on transmission. Aborting.\n\e[0m"
   exit 1
@@ -88,12 +88,12 @@ while [ $# -ne 0 ]; do
 
   for TORRENT in $PARAMETER; do
     echo -ne "\n\e[0;1;4;32mFor the Torrent: \e[0;4;32m"
-    $TRANSMISSION_REMOTE -t $TORRENT -i | sed -nr 's/ *Name: ?(.*)/\1/p'
+    $TRANSMISSION_REMOTE -n $username:$password  -t $TORRENT -i | sed -nr 's/ *Name: ?(.*)/\1/p'
     echo "$TRACKER_LIST" | while read TRACKER
     do
       if [ ! -z "$TRACKER" ]; then
         echo -ne "\e[0;36;1mAdding $TRACKER\e[0;36m"
-        $TRANSMISSION_REMOTE -t $TORRENT -td $TRACKER 1>/dev/null 2>&1 
+        $TRANSMISSION_REMOTE -n $username:$password  -t $TORRENT -td $TRACKER 1>/dev/null 2>&1 
         if [ $? -eq 0 ]; then
           echo -e " -> \e[32mSuccess! "
         else
