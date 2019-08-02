@@ -3,10 +3,10 @@
 
 # Below is a command that will get a list of trackers with one tracker per line
 # command can be 'cat /some/path/trackers.txt' for a static list
-LIVE_TRACKERS_LIST_CMD='curl -fs --url https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt' 
+LIVE_TRACKERS_LIST_CMD='curl -fs --url http://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt' 
 
 
-TRANSMISSION_REMOTE='/usr/bin/transmission-remote -n username:passwd' #REPLACE YOUR USERNAME&PASSWORD HERE 此处修改信息
+TRANSMISSION_REMOTE='/usr/bin/transmission-remote -n root:passwd' #REPLACE YOUR USERNAME&PASSWORD HERE 此处修改信息
 
 TORRENTS=$($TRANSMISSION_REMOTE -l 2>/dev/null)
 if [ $? -ne 0 ]; then
